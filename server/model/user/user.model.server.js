@@ -3,7 +3,6 @@ let UserSchema = require('./user.schema.server');
 let UserModel = mongoose.model('UserModel', UserSchema);
 UserModel.createUser = createUser;
 UserModel.findUserById = findUserById;
-UserModel.findUserByFacebookId = findUserByFacebookId;
 UserModel.findUserByUsername = findUserByUsername;
 UserModel.findUserByCredentials = findUserByCredentials;
 UserModel.updateUser = updateUser;
@@ -17,10 +16,6 @@ function createUser(user) {
 
 function findUserById(userId) {
   return UserModel.findById(userId);
-}
-
-function findUserByFacebookId(facebookId) {
-  return UserModel.findOne({'facebook.id': facebookId});
 }
 
 function findUserByUsername(username){

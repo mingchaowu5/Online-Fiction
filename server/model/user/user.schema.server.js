@@ -8,10 +8,6 @@ var UserSchema = new Schema({
   lastName: String,
   email: String,
   phone: String,
-  facebook: {
-    id:    String,
-    token: String
-  },
   websites:  [{ type: Schema.Types.ObjectId, ref: 'WebsiteModel' }],
   dateCreated: { type: Date, default: Date.now }
 }, { collection: 'user' });
