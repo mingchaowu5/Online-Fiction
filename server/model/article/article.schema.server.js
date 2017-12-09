@@ -1,15 +1,13 @@
+let mongoose = require('mongoose');
+let Schema = mongoose.Schema;
 
-module.exports = function (app) {
-    var mongoose = require("mongoose");
+let ArticleSchema = mongoose.Schema({
+  _book: {type: Schema.Types.ObjectId, ref: "BookModel", required: true},
+  title: String,
+  chapterNumber: Number,
+  chapterName: String,
+  content: String,
+  dateCreated: { type: Date, default: Date.now }
+}, {collection: "article"});
 
-    var ArticleSchema = mongoose.Schema({
-        _book: {type: mongoose.Schema.Types.ObjectId, ref: "book", required: true},
-        title: String,
-        chapterNumber: Number,
-        chapterName: String,
-        liked: Number,
-        content: String
-    }, {collection: "article"});
-
-    return ArticleSchema;
-};
+module.exports = ArticleSchema;

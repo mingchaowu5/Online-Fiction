@@ -1,45 +1,40 @@
+let mongoose = require('mongoose');
+let articleSchema = require('./article.schema.server');
+let ArticleModel = mongoose.model('ArticleModel', articleSchema);
+ArticleModel.createArticle = createArticle;
+ArticleModel.findAllArticles = findAllArticles;
+ArticleModel.findAllArticlesForBook = findAllArticlesForBook;
+ArticleModel.findArticleById = findArticleById;
+ArticleModel.updateArticle = updateArticle;
+ArticleModel.deleteArticle = deleteArticle;
+ArticleModel.deleteArticleOfBook = deleteArticleOfBook;
+module.exports = ArticleModel;
+let articleModel = require('../article/article.model.server');
 
-module.exports = function () {
-    var api = {
-        createArticle: createArticle,
-        findArticlesForBook: findArticlesForBook,
-        findArticleById: findArticleById,
-        updateArticle: updateArticle,
-        deleteArticle: deleteArticle,
-    };
+function createArticle(article) {
+  return ArticleModel.create(article);
+}
 
-    var mongoose = require('mongoose');
-    mongoose.Promise = require('q').Promise;
+function findAllArticles() {
+  return ArticleModel.find();
+}
 
-    var ArticleSchema = require('./article.schema.server')();
-    var ArticleModel = mongoose.model('AWArticleModel', ArticleSchema);
+function findAllArticlesForBook(bookId) {
+  return ArticleModel.find({_book: bookId});
+}
 
-    return api;
+function findArticleById(articleId) {
+  return ArticleModel.findById(articleId);
+}
 
-    function createArticle(bookId, article) {
-        article._book = bookId;
-        return ArticleModel.create(article);
-    }
+function updateArticle(articleId, article) {
+  return ArticleModel.findOneAndUpdate({_id: articleId}, article, {new:true});
+}
 
-    function findArticlesForBook(bookId) {
-        return ArticleModel.find({_book: bookId});
-    }
+function deleteArticle(articleId) {
+  return ArticleModel.findOneAndRemove({_id: articleId});
+}
 
-    function findArticleById(articleId) {
-        return ArticleModel.findById(articleId);
-    }
-
-    function updateArticle(articleId, article) {
-        return ArticleModel.update({_id: articleId},
-            {
-                title: article.title,
-                chapterNumber: article.chapterNumber,
-                chapterName: article.chapterName,
-                content: article.content
-            });
-    }
-
-    function deleteArticle(articleId) {
-        return ArticleModel.remove({_id: articleId});
-    }
-};
+function deleteArticleOfBook(bookId) {
+  return ArticleModel.remove({_book: bookId});
+}

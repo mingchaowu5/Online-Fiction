@@ -1,128 +1,62 @@
+module.exports = function (app) {
 
-module.exports = function (app, model) {
-    app.post("/aw/api/book/:bookId/article", createArticle);
-    app.get("/aw/api/article/:articleId", findArticleById);
-    app.get("/aw/api/book/:bookId/article", findAllArticlesForBook);
-    app.get("/aw/api/article/popular/:amount", findPopularArticles);
-    app.put("/aw/api/article/:articleId", updateArticle);
-    app.delete("/aw/api/article/:articleId", deleteArticle);
-    app.get("/aw/api/article", findArticles);
+  let articleModel = require('../model/article/article.model.server');
+  let bookModel = require('../model/book/book.model.server');
+  app.post('/api/book/:bookId/article', createArticle);
+  app.get('/api/book/:bookId/article', findAllArticlesForBook);
+  app.get('/api/article/:articleId', findArticleById);
+  app.get('/api/article', findAllArticles);
+  app.put('/api/article/:articleId', updateArticle);
+  app.delete('/api/article/:articleId', deleteArticle);
 
-    function findAllArticlesForBook(req, res) {
-        var bookId = req.params.bookId;
+  function createArticle(req, res) {
+    let article = req.body;
+    let bookId = req.params['bookId'];
+    articleModel.createArticle(article).then(function (result) {
+      bookModel.addArticle(bookId, result._id).then(function (r) {
+        res.json(result);
+      })
+    })
+  }
 
-        model.ArticleModel
-            .findArticlesForBook(bookId)
-            .then(
-                function (articles) {
-                    res.json(articles);
-                },
-                function (err) {
-                    res.status(500).send(err);
-                }
-            )
-    }
-    
-    function findArticles(req, res) {
-        var authorId = req.query.authorId;
+  function findAllArticlesForBook(req, res) {
+    let bookId = req.params['bookId'];
+    articleModel.findAllArticlesForBook(bookId).then(function (result) {
+      res.json(result);
+    })
+  }
 
-        if (authorId) {
-            findArticlesByAuthorId(req, res);
-        }
-    }
+  function findArticleById(req, res) {
+    let pid = req.params['articleId'];
+    articleModel.findArticleById(pid).then(function (result) {
+      res.json(result);
+    })
+  }
 
-    function findPopularArticles(req, res) {
-        var amount = req.params.amount;
-    }
+  function findAllArticles(req, res) {
+    articleModel.findAllArticles().then(function (result) {
+      res.json(result);
+    })
+  }
 
-    /*
-    function findAllArticles(req, res) {
-        model.ArticleModel.findAllArticles()
-            .then(
-                function (articles) {
-                    res.json(articles);
-                }
-            );
-    }
-    */
+  function updateArticle(req, res) {
+    let pid = req.params['articleId'];
+    let article = req.body;
+    articleModel.updateArticle(pid, article).then(function (result) {
+      res.json(result);
+    })
+  }
 
-    function findArticlesByAuthorId(req, res) {
-        var authorId = req.query.authorId;
-        console.log("find articles by author ID");
+  function deleteArticle(req, res) {
+    let pid = req.params['articleId'];
+    articleModel.findArticleById(pid).then(function (article) {
+      bookModel.removeArticle(article._book, article._id).then(function (book) {
+        articleModel.deleteArticle(pid).then(function (result) {
+          res.json({});
+        });
+      });
+    });
+  }
 
-        model.ArticleModel
-            .findArticlesByAuthorId(authorId)
-            .then(
-                function (response) {
-                    res.send(response);
-                }
-            )
-            .catch(function (err) {
-                res.status(500).send(err);
-            });
-    }
 
-    function createArticle(req, res) {
-        var userId = req.params.userId;
-        var bookId = req.params.bookId;
-        var newArticle = req.body;
-
-        console.log("creating article");
-        console.log(newArticle);
-
-        model.ArticleModel
-            .createArticle(bookId, newArticle)
-            .then(function (article) {
-                res.send(article);
-            }, function (error) {
-                res.sendStatus(500).send(error);
-            });
-    }
-
-    function findArticleById(req, res) {
-        var articleId = req.params.articleId;
-
-        model.ArticleModel
-            .findArticleById(articleId)
-            .then(
-                function (response) {
-                    res.send(response);
-                })
-            .catch(function (err) {
-                res.status(500).send(err);
-            });
-    }
-
-    function updateArticle(req, res) {
-        var articleId = req.params.articleId;
-        var newArticle = req.body;
-
-        model.ArticleModel
-            .updateArticle(articleId, newArticle)
-            .then(
-                function (status) {
-                    res.sendStatus(200);
-                }
-            )
-            .catch(function (err) {
-                res.status(500).send(err);
-            });
-    }
-
-    function deleteArticle(req, res) {
-        var articleId = req.params.articleId;
-
-        model.ArticleModel
-            .deleteArticle(articleId)
-            .then(
-                function (status) {
-                    res.sendStatus(200);
-                }
-            )
-            .catch(
-                function (err) {
-                    res.status(500).send(err);
-                }
-            );
-    }
 };

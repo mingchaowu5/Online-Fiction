@@ -1,132 +1,57 @@
+module.exports = function (app) {
+  let bookModel = require('../model/book/book.model.server');
+  let userModel = require('../model/user/user.model.server');
 
-module.exports = function (app, model) {
-    app.post("/aw/api/writer/:userId/book", createBook);
-    app.get("/aw/api/book/popular/:amount", findPopularBooks);
-    app.get("/aw/api/book/all", findAllBooks);
-    app.get("/aw/api/book/:bookId", findBookByBookId);
-    app.get("/aw/api/book", findBooks);
-    app.put("/aw/api/book/:bookId", updateBook);
-    app.delete("/aw/api/book/:bookId", deleteBook);
+  app.post('/api/user/:userId/book', createBook);
+  app.get('/api/user/:userId/book', findAllBooksForUser);
+  app.get('/api/book/:bookId', findBookById);
+  app.get('/api/book', findAllBooks);
+  app.put('/api/book/:bookId', updateBook);
+  app.delete('/api/book/:bookId', deleteBook);
 
-    function findBooks(req, res) {
-        var authorId = req.query.authorId;
-        var authorFirstName = req.query.authorFirstName;
-        var authorLastName = req.query.authorLastName;
-        var ISBN = req.query.ISBN;
+  function createBook(req, res) {
+    let book = req.body;
+    let userId = req.params['userId'];
+    bookModel.createBook(book).then(function (result) {
+      userModel.addBook(userId, result._id).then(function (r) {
+        res.json(result);
+      })
+    })
+  }
 
-        if (authorId) {
-            findBooksByAuthorId(req, res);
-        } else if (authorFirstName && authorLastName) {
-            findBooksByAuthorName()
-        } else if (ISBN) {
-            findBookByISBN(req, res);
-        }
-    }
+  function findAllBooks(req, res) {
+    bookModel.findAllBooks().then(function (result) {
+      res.json(result);
+    })
+  }
 
-    function findBookByISBN(req, res) {
-        // TODO
-    }
+  function findAllBooksForUser(req, res) {
+    let userId = req.params['userId'];
+    bookModel.findAllBooksForUser(userId).then(function (result) {
+      res.json(result);
+    })
+  }
 
-    function findPopularBooks(req, res) {
-        var amount = req.params.amount;
-    }
+  function findBookById(req, res) {
+    let aid = req.params['bookId'];
+    bookModel.findBookById(aid).then(function (result) {
+      res.json(result);
+    })
+  }
 
-    function findAllBooks(req, res) {
-        model.BookModel.findAllBooks()
-            .then(
-                function (books) {
-                    res.json(books);
-                }
-            );
-    }
+  function updateBook(req, res) {
+    let aid = req.params['bookId'];
+    let book = req.body;
+    bookModel.updateBook(aid, book).then(function (result) {
+      res.json(result);
+    })
+  }
 
-    function findBooksByAuthorName(req, res) {
-        // TODO: implement this
-    }
-    /*
-    function findUser(req, res) {
-        var username = req.query['username'];
-        var password = req.query['password'];
-        if (username && password) {
-            findUserByCredentials(req, res);
-        } else if (username) {
-            findUserByUsername(req, res);
-        }
-    }
-    */
+  function deleteBook(req, res) {
+    let bid = req.params['bookId'];
+    bookModel.deleteBook(bid).then(function (result) {
+      res.json({});
+    })
+  }
 
-    function findBooksByAuthorId(req, res) {
-        var authorId = req.query.authorId;
-
-        model.BookModel
-            .findAllBooksForAuthor(authorId)
-            .then(
-                function (response) {
-                    res.send(response);
-                }
-            )
-            .catch(function (err) {
-                res.status(500).send(err);
-            });
-    }
-
-    function createBook(req, res) {
-        var userId = req.params.userId;
-        var newBook = req.body;
-
-        model.BookModel
-            .createBook(userId, newBook)
-            .then(function (book) {
-                res.send(book);
-            }, function (error) {
-                res.sendStatus(500).send(error);
-            });
-    }
-
-    function findBookByBookId(req, res) {
-        var bookId = req.params.bookId;
-
-        model.BookModel
-            .findBookById(bookId)
-            .then(
-                function (response) {
-                    res.send(response);
-                })
-            .catch(function (err) {
-                res.status(500).send(err);
-            });
-    }
-
-    function updateBook(req, res) {
-        var bookId = req.params.bookId;
-        var newBook = req.body;
-
-        model.BookModel
-            .updateBook(bookId, newBook)
-            .then(
-                function (status) {
-                    res.sendStatus(200);
-                }
-            )
-            .catch(function (err) {
-                res.status(500).send(err);
-            });
-    }
-
-    function deleteBook(req, res) {
-        var bookId = req.params.bookId;
-
-        model.BookModel
-            .deleteBook(bookId)
-            .then(
-                function (status) {
-                    res.sendStatus(200);
-                }
-            )
-            .catch(
-                function (err) {
-                    res.status(500).send(err);
-                }
-            );
-    }
 };

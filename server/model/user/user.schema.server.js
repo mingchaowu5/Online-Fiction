@@ -1,51 +1,21 @@
+let mongoose = require('mongoose');
+let Schema = mongoose.Schema;
 
-<<<<<<< Updated upstream
-var UserSchema = new Schema({
-  username: String,
+let UserSchema = new Schema({
+  username: {type: String, required: true},
   password: String,
-  firstName: String,
-  lastName: String,
-  email: String,
+  role: {type: String, enum: ["admin", "reader", "writer", "editor"], default: "reader"},
+  firstName: {type: String, default: 'first'},
+  lastName: {type: String, default: 'last'},
   phone: String,
-  websites:  [{ type: Schema.Types.ObjectId, ref: 'WebsiteModel' }],
-  dateCreated: { type: Date, default: Date.now }
+  email: String,
+  address: String,
+  bookshelf: [{type: mongoose.Schema.Types.ObjectId, ref: 'BookModel'}],
+  publishedBooks: [{type: mongoose.Schema.Types.ObjectId, ref: 'BookModel'}],
+  comments: [{ type: Schema.Types.ObjectId, ref: 'CommentModel' }],
+  follows: [{ type: Schema.Types.ObjectId, ref: 'UserModel' }],
+  followedBy: [{ type: Schema.Types.ObjectId, ref: 'UserModel' }],
+  dateCreated: {type: Date, default: Date.now},
 }, { collection: 'user' });
-=======
-module.exports = function (app) {
-  var mongoose = require("mongoose");
->>>>>>> Stashed changes
 
-  var UserSchema = mongoose.Schema({
-    username: {type: String, required: true},
-    password: String,
-    role: {type: String, enum: ["admin", "reader", "writer"], required: true, default: "reader"},
-    firstName: String,
-    lastName: String,
-    phone: String,
-    email: String,
-    address: String,
-    // readerInfo: {
-    bookshelf: [{type: mongoose.Schema.Types.ObjectId, ref: 'book'}]
-    // bookFollowing: [{type: mongoose.Schema.Types.ObjectId, ref: 'book'}],
-    ,
-    // writerInfo: {
-    publishedList: [{type: mongoose.Schema.Types.ObjectId, ref: 'book'}]
-    ,
-    dateCreated: {type: Date, default: Date.now},
-    goodreads: {
-      id: String
-    },
-    facebook: {
-      id: String,
-      token: String
-    },
-    google: {
-      id: String
-    },
-    twitter: {
-      id: String
-    }
-  }, {collection: "user"});
-
-  return UserSchema;
-};
+module.exports = UserSchema;

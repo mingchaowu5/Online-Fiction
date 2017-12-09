@@ -13,6 +13,17 @@ import { ArticleNewComponent } from './components/article/article-new/article-ne
 import { ArticleEditComponent } from './components/article/article-edit/article-edit.component';
 import { ArticleListComponent } from './components/article/article-list/article-list.component';
 import { AdminComponent } from './components/admin/admin.component';
+import {AuthenticationService} from './services/authentication.service.client';
+import {UserService} from './services/user.service.client';
+import {BookService} from './services/book.service.client';
+import {ArticleService} from './services/article.service.client';
+import {CommentService} from './services/comment.service.client';
+import {SharedService} from './services/shared.service.client';
+import {HttpModule} from '@angular/http';
+import {FormsModule} from '@angular/forms';
+import {Routing} from './app.routing';
+import { AllBookComponent } from './components/home/all-book/all-book.component';
+import { PeopleComponent } from './components/home/people/people.component';
 
 @NgModule({
   declarations: [
@@ -27,12 +38,17 @@ import { AdminComponent } from './components/admin/admin.component';
     ArticleNewComponent,
     ArticleEditComponent,
     ArticleListComponent,
-    AdminComponent
+    AdminComponent,
+    AllBookComponent,
+    PeopleComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    HttpModule,
+    FormsModule,
+    Routing,
   ],
-  providers: [],
+  providers: [AuthenticationService, UserService, BookService, ArticleService, CommentService, SharedService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {SharedService} from "../../services/shared.service.client";
+import {NavigationEnd, Router} from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -7,9 +9,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  searchText;
+  currentUser;
+  currentPath;
+
+
+  constructor(private router: Router, private sharedService: SharedService) { }
 
   ngOnInit() {
+    this.currentUser = this.sharedService.user;
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.currentPath = event.url;
+      }
+    });
+  }
+
+  searchBook() {
+
   }
 
 }
