@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {Router} from "@angular/router";
+import {SharedService} from "../../../services/shared.service.client";
+import {BookService} from "../../../services/book.service.client";
 
 @Component({
   selector: 'app-all-book',
@@ -7,9 +10,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AllBookComponent implements OnInit {
 
-  constructor() { }
+  books;
+  constructor(private router: Router, private sharedService: SharedService,
+               private bookService: BookService) { }
 
   ngOnInit() {
+    this.bookService.findAllBooks().subscribe(result => {
+      this.books = result;
+    });
   }
 
 }

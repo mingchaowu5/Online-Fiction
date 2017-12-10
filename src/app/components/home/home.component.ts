@@ -26,7 +26,9 @@ export class HomeComponent implements OnInit {
   }
 
   searchBook() {
-
+    if (this.searchText) {
+      this.router.navigate(['search-result', this.searchText]);
+    }
   }
 
 }

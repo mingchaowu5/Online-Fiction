@@ -45,7 +45,7 @@ function findAllBooksForUser(userId) {
 }
 
 function findBookById(bookId) {
-  return BookModel.findById(bookId);
+  return BookModel.findById(bookId).populate('_author').exec();
 }
 
 function updateBook(bookId, book) {

@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {UserService} from '../../../services/user.service.client';
 import {Router} from '@angular/router';
 import {SharedService} from '../../../services/shared.service.client';
 import {BookService} from "../../../services/book.service.client";
+declare let $: any;
 
 @Component({
   selector: 'app-profile',
@@ -22,7 +23,7 @@ export class ProfileComponent implements OnInit {
   updateMessageFlag = false;
   updateMessage = 'Successfully updated';
   constructor(private userService: UserService, private router: Router, private sharedService: SharedService,
-               private bookService: BookService) { }
+               private bookService: BookService, private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.user = this.sharedService.user;
@@ -56,6 +57,7 @@ export class ProfileComponent implements OnInit {
     };
     this.bookService.createBook(this.user._id, newBook).subscribe(r => {
       this.bookService.findBooksForUser(this.user._id).subscribe(result => {
+        $('#newBookModel').modal('hide');
         this.books = result;
       });
     });
@@ -63,6 +65,26 @@ export class ProfileComponent implements OnInit {
 
   editBook(book) {
     this.currentEditBook = book;
+    this.changeDetectorRef.detectChanges();
+    $('#editBookModel').modal('show');
+  }
+
+  updateBook() {
+    this.bookService.updateBook(this.currentEditBook._id, this.currentEditBook).subscribe(r => {
+      this.bookService.findBooksForUser(this.user._id).subscribe(result => {
+        $('#editBookModel').modal('hide');
+        this.books = result;
+      });
+    });
+  }
+
+  deleteBook() {
+    this.bookService.deleteBook(this.currentEditBook._id).subscribe(r => {
+      this.bookService.findBooksForUser(this.user._id).subscribe(result => {
+        $('#editBookModel').modal('hide');
+        this.books = result;
+      });
+    });
   }
 
 }
