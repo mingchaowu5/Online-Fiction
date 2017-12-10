@@ -1,3 +1,47 @@
-<p>
-  book-new works!
-</p>
+<!DOCTYPE html>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-text pull-left">
+      <a href="#/writer/{{model.userId}}/published">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+      </a>
+    </div>
+
+    <div class="navbar-text pull-right">
+      <a ng-click="model.createBook(book)">
+        <span class="glyphicon glyphicon-ok"></span>
+      </a>
+    </div>
+    <div class="navbar-header">
+      <!--<a class="navbar-brand" href="#/user/{{model.userId}}/website/new">New Website</a>-->
+      <a class="navbar-brand" href="#/writer/{{model.userId}}/book/new">New Course</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="col-xs-12">
+    <div ng-show="model.error" class="alert alert-danger" role="alert">
+      {{model.error}}
+    </div>
+
+    <label for="name">Title</label>
+    <input ng-model="book.title" class="form-control" id="name" placeholder="Name">
+
+    <label for="isbn">CourseID</label>
+    <input ng-model="book.isbn" class="form-control" id="isbn" placeholder="ex, cs5610">
+
+    <!--TODO: genre should be checkbox?-->
+    <label>Type</label>
+    <input ng-model="book.genres" class="form-control" id="genres" placeholder="ex. assignment, reading material,video">
+
+    <label for="description">Description</label>
+    <textarea ng-model="book.description"
+              class="form-control"
+              rows="4"
+              id="description"
+              placeholder="Description">
+        </textarea>
+  </div>
+</div>

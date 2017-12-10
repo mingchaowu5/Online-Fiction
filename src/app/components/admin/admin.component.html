@@ -1,3 +1,63 @@
-<p>
-  admin works!
-</p>
+<!DOCTYPE html>
+<nav class="navbar navbar-default navbar-fixed-top navbar-bc">
+  <div class="container-fluid">
+
+
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#/home">Admin</a>
+    </div>
+  </div>
+</nav>
+<!--<h2>Admin</h2>-->
+
+<div ng-show="model.error" class="alert alert-danger" role="alert">
+  {{model.error}}
+</div>
+
+<h3>User Management</h3>
+
+<table class="table table-stripped">
+  <thead>
+  <tr>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Username</th>
+    <th>Password</th>
+    <th>Email</th>
+    <th>Role</th>
+  </tr>
+  <tr>
+    <td><input ng-model="user.firstName" class="form-control" placeholder="First"></td>
+    <td><input ng-model="user.lastName" class="form-control" placeholder="Last"></td>
+    <td><input ng-model="user.username" class="form-control" placeholder="Username"></td>
+    <td><input ng-model="user.password" class="form-control" type="password" placeholder="Password"></td>
+    <td><input ng-model="user.email" class="form-control" type="email" placeholder="abc@example.com"></td>
+    <td><input ng-model="user.role" class="form-control" placeholder=""></td>
+    <td>
+      <button ng-click="model.register(user)" class="btn btn-primary">
+        <span class="glyphicon glyphicon-plus"></span>
+      </button>
+    </td>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="user in model.users">
+    <td><input ng-model="user.firstName" class="form-control" value="{{user.firstName}}"></td>
+    <td><input ng-model="user.lastName" class="form-control" value="{{user.lastName}}"></td>
+    <td><input ng-model="user.username" class="form-control" value="{{user.username}}"></td>
+    <td><input ng-model="user.password" class="form-control" value="{{user.password}}"></td>
+    <td><input ng-model="user.email" class="form-control" value="{{user.email}}"></td>
+    <td><input ng-model="user.role" class="form-control" value="{{user.role}}"></td>
+    <td>
+      <button ng-click="model.updateUser(user)" class="btn btn-success">
+        <span class="glyphicon glyphicon-ok"></span>
+      </button>
+    </td>
+    <td>
+      <button ng-click="model.deleteUser(user._id)" class="btn btn-danger">
+        <span class="glyphicon glyphicon-remove"></span>
+      </button>
+    </td>
+  </tr>
+  </tbody>
+</table>

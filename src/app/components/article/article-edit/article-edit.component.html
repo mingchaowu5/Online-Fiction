@@ -1,3 +1,50 @@
-<p>
-  article-edit works!
-</p>
+<!DOCTYPE html>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-text pull-left">
+      <a href="#/writer/{{model.userId}}/book/{{model.bookId}}/articles">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+      </a>
+    </div>
+    <div class="navbar-text pull-right">
+      <a ng-click="model.updateArticle(article)">
+        <span class="glyphicon glyphicon-ok"></span>
+      </a>
+    </div>
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#/writer/{{model.userId}}/book/{{model.bookId}}/article/{{model.articleId}}">
+        Edit Lesson</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div ng-show="model.error" class="alert alert-danger" role="alert">
+    {{model.error}}
+  </div>
+
+  <label for="name">Title</label>
+  <input ng-model="model.article.title" class="form-control" id="name">
+
+  <label for="chapterNum">Lesson Number</label>
+  <input ng-model="model.article.chapterNumber" type="number" class="form-control" id="chapterNum">
+
+  <label for="chapterName">Lesson Name</label>
+  <input ng-model="model.article.chapterName" type="text" class="form-control" id="chapterName">
+
+  <label for="content">Content</label>
+  <div ng-model="model.article.content"
+       id="content"
+       text-angular
+       ta-toolbar="[['h1','h2','h3'],
+         ['bold','italics','underline','strikeThrough'],
+        ['ul','ol'],
+        <!--['justifyLeft','justifyCenter','justifyRight','justifyFull'],-->
+        ['indent','outdent'],
+        ['html']]"
+  >
+  </div>
+
+  <a class="btn btn-danger btn-block" ng-click="model.deleteArticle()">Delete Lesson</a>
+</div>

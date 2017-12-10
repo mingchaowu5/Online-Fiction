@@ -1,3 +1,29 @@
-<p>
-  article-list works!
-</p>
+<!DOCTYPE html>
+
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-text pull-left">
+      <a href="#/home">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+      </a>
+    </div>
+    <div class="navbar-text pull-right">
+      <!--TODO: like the article-->
+      <!--<a ng-click="model.likeTheArticle()">-->
+      <span class="glyphicon glyphicon-heart"></span>
+      <!--</a>-->
+    </div>
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#/">Chapter: {{model.article.title}}</a>
+    </div>
+  </div>
+</nav>
+
+<div ng-show="model.error" class="alert alert-danger" role="alert">
+  {{model.error}}
+</div>
+
+<div class="container-fluid">
+  <div ng-bind-html="model.getTrustedHtml(model.article.content)"></div>
+</div>

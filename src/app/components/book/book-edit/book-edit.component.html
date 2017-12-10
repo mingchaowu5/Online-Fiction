@@ -1,3 +1,63 @@
-<p>
-  book-edit works!
-</p>
+<!DOCTYPE html>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-text pull-left hidden-sm">
+      <a href="#/writer/{{model.userId}}/published">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+      </a>
+    </div>
+    <div class="navbar-text pull-right">
+      <a ng-click="model.updateBook()">
+        <span class="glyphicon glyphicon-ok"></span>
+      </a>
+    </div>
+    <div class="navbar-header">
+      <!--<a class="navbar-brand" href="#/user/{{model.userId}}/website/new">New Website</a>-->
+      <a class="navbar-brand" href="#/home">Course System</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="col-sm-8">
+    <div ng-show="model.error" class="alert alert-danger" role="alert">
+      {{model.error}}
+    </div>
+
+    <div class="alert alert-success" ng-show="model.message">
+      {{model.message}}
+    </div>
+
+    <label for="name">Title</label>
+    <input class="form-control" id="name" placeholder="Name" ng-model="model.book.title">
+
+    <!--<label for="authors">Authors</label>-->
+    <!--<input class="form-control" id="authors" ng-model="model.book.authors">-->
+
+    <label for="isbn">CourseID</label>
+    <input class="form-control" id="isbn" ng-model="model.book.isbn">
+
+    <!--<label for="articles">Articles</label>-->
+    <!--<input class="form-control" id="articles" ng-model="model.book.articles">-->
+
+    <!--<label for="subs">Subs</label>-->
+    <!--<input class="form-control" id="subs" ng-model="model.book.subscribers">-->
+
+    <label for="genres">Type</label>
+    <input class="form-control" id="genres" ng-model="model.book.genres">
+
+    <!--<label for="liked">Liked</label>-->
+    <!--<input class="form-control" id="liked" type="number" ng-model="model.book.liked">-->
+
+    <label for="description">Description</label>
+    <textarea ng-model="model.book.description"
+              class="form-control"
+              rows="4"
+              id="description"
+              placeholder="Description">
+        </textarea>
+
+    <a class="btn btn-danger btn-block" ng-click="model.deleteBook()">Delete Class</a>
+  </div>
+</div>
