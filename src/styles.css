@@ -6,3 +6,7 @@
 input {
   margin-bottom: 5px;
 }
+
+a:not([href]) {
+  cursor: pointer;
+}
