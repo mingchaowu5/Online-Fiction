@@ -47,7 +47,7 @@ import { PublicComponent } from './components/user/public/public.component';
     FormsModule,
     Routing,
   ],
-  providers: [AuthenticationService, UserService, BookService, ArticleService, CommentService, SharedService,GoogleBookService],
+  providers: [AuthenticationService, UserService, BookService, ArticleService, CommentService, SharedService, GoogleBookService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
