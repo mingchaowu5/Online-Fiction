@@ -1,3 +1,35 @@
-<p>
-  search-result-detail works!
-</p>
+<style>
+  body{ text-align:center}
+  #div50{ margin:auto;max-width :75%}
+
+</style>
+<body>
+<div >
+  <div *ngIf="book">
+
+    <!--<img class="img-fluid" [src]="book.urls.full">-->
+    <h3>{{book.volumeInfo.title}}</h3>
+    <h6>{{book.volumeInfo.authors}}</h6>
+    <img class="img-fluid" [src]="book.volumeInfo.imageLinks.smallThumbnail">
+    <p id="div50">{{book.volumeInfo.description}}</p>
+
+  </div>
+  <div class="div"  *ngIf="book">
+    <div class="col-6">
+      <!--<h6>Author: {{book.volumeInfo.authors}}</h6>-->
+      <!--<img class="img-fluid" [src]="book.volumeInfo.imageLinks.smallThumbnail">-->
+      <!--<p>{{book.volumeInfo.description}}</p>-->
+
+
+    </div>
+    <div class="col-6" >
+      <!--<p class="lead"><strong>Likes:</strong> {{book.likes}}    <strong>  Views:</strong> {{book.views}}</p>-->
+      <hr>
+
+
+    </div>
+    <div class="col">
+    </div>
+  </div>
+</div>
+</body>
