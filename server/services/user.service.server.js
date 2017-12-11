@@ -15,6 +15,8 @@ module.exports = function (app) {
   app.post('/api/user', createUser);
   app.get('/api/user', findUsers);
   app.get('/api/user/:userId', findUserById);
+  app.get('/api/user/:userId/following', findFollowingUsers);
+  app.get('/api/user/:userId/followed', findFollowedUsers);
   // app.get('/api/user/:userId/raw', findRawUserById);
   app.put('/api/user/:userId', updateUser);
   app.delete('/api/user/:userId', deleteUser);
@@ -125,6 +127,20 @@ module.exports = function (app) {
     userModel.findUserById(uid).then(function (user) {
       res.json(user);
     });
+  }
+
+  function findFollowingUsers(req, res) {
+    let uid = req.params['userId'];
+    userModel.findFollowingUsers(uid).then(function (users) {
+      res.json(users);
+    })
+  }
+
+  function findFollowedUsers(req, res) {
+    let uid = req.params['userId'];
+    userModel.findFollowedUsers(uid).then(function (users) {
+      res.json(users);
+    })
   }
   //
   // function findRawUserById(req, res) {

@@ -2,8 +2,8 @@ import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {UserService} from '../../../services/user.service.client';
 import {Router} from '@angular/router';
 import {SharedService} from '../../../services/shared.service.client';
-import {BookService} from "../../../services/book.service.client";
-import {CommentService} from "../../../services/comment.service.client";
+import {BookService} from '../../../services/book.service.client';
+import {CommentService} from '../../../services/comment.service.client';
 declare let $: any;
 
 @Component({
@@ -26,6 +26,9 @@ export class ProfileComponent implements OnInit {
   comments;
   currentEditComment;
 
+  followings;
+  followers;
+
   updateMessageFlag = false;
   updateMessage = 'Successfully updated';
   constructor(private userService: UserService, private router: Router, private sharedService: SharedService,
@@ -44,6 +47,12 @@ export class ProfileComponent implements OnInit {
     this.commentService.findCommentsForUser(this.user._id).subscribe(result => {
       this.comments = result;
       console.log('comment of user', result);
+    });
+    this.userService.findFollowingUsers(this.user._id).subscribe(result => {
+      this.followings = result;
+    });
+    this.userService.findFollowedUsers(this.user._id).subscribe(result => {
+      this.followers = result;
     });
   }
 

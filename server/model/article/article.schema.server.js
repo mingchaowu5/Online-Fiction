@@ -2,7 +2,7 @@ let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
 let ArticleSchema = mongoose.Schema({
-  _book: {type: Schema.Types.ObjectId, ref: "BookModel", required: true},
+  _book: {type: Schema.Types.ObjectId, ref: "BookModel"},
   title: String,
   chapterNumber: Number,
   chapterName: String,

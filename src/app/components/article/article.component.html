@@ -1,3 +1,10 @@
-<p>
-  article works!
-</p>
+<div class="container-fluid jy-max-width-700">
+  <div class="row">
+    <div class="col text-center" *ngIf="article">
+      <h2>{{'Chapter ' + article.chapterNumber + ': ' + article.chapterName}}</h2>
+      <p>{{article.content}}</p>
+      <a class="btn btn-primary" routerLink="/book/{{article._book}}">Back</a>
+    </div>
+  </div>
+</div>
+

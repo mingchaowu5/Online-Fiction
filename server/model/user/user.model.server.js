@@ -12,6 +12,8 @@ UserModel.toggleLikeBook = toggleLikeBook;
 UserModel.addBook = addBook;
 UserModel.removeBook = removeBook;
 UserModel.toggleFollow = toggleFollow;
+UserModel.findFollowingUsers = findFollowingUsers;
+UserModel.findFollowedUsers = findFollowedUsers;
 module.exports = UserModel;
 let bookModel = require('../book/book.model.server');
 let commentModel = require('../comment/comment.model.server');
@@ -30,6 +32,18 @@ function findUserByUsername(username){
 
 function findUserByCredentials(username, password){
   return UserModel.findOne({username: username, password: password});
+}
+
+function findFollowingUsers(userId) {
+  return UserModel.findById(userId).then(function (user) {
+    return UserModel.find( {'_id': { $in: user.follows }});
+  })
+}
+
+function findFollowedUsers(userId) {
+  return UserModel.findById(userId).then(function (user) {
+    return UserModel.find( {'_id': { $in: user.followedBy }});
+  })
 }
 
 function findAllUsers() {

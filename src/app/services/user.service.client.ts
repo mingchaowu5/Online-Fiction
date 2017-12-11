@@ -89,6 +89,24 @@ export class UserService {
       );
   }
 
+  findFollowingUsers(userId: string) {
+    return this.http.get(this.baseUrl + '/api/user/' + userId + '/following')
+      .map(
+        (res: Response) => {
+          return res.json();
+        }
+      );
+  }
+
+  findFollowedUsers(userId: string) {
+    return this.http.get(this.baseUrl + '/api/user/' + userId + '/followed')
+      .map(
+        (res: Response) => {
+          return res.json();
+        }
+      );
+  }
+
   findAllUsers() {
     return this.http.get(this.baseUrl + '/api/user')
       .map((res: Response) => {

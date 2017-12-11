@@ -1,3 +1,193 @@
-<p>
-  admin works!
-</p>
+<div class="container-fluid jy-max-width-700" *ngIf="currentUser.role === 'admin'; else elseBlock">
+
+  <h2>Administrator page</h2>
+
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="user-tab" data-toggle="tab" href="#userTab">User</a>
+    </li>
+    <li class="nav-item">
+      <a  class="nav-link" id="book-tab" data-toggle="tab" href="#bookTab">Book</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="article-tab" data-toggle="tab" href="#articleTab">Article</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="comment-tab" data-toggle="tab" href="#commentTab">Comment</a>
+    </li>
+  </ul>
+
+  <div class="tab-content" id="myTabContent">
+
+    <div class="tab-pane fade show active" id="userTab">
+      <ul class="list-inline">
+        <li *ngFor="let user of users" class="list-inline-item mr-1">
+          <a class="text-primary h5" (click)="selectUser(user)">{{user.username}}</a>
+        </li>
+      </ul>
+      <form class="jy-form" *ngIf="selectedUser">
+        <div class="form-group">
+          <label for="username">Username:</label>
+          <input type="text" class="form-control" name="username" id="username" [(ngModel)] = "selectedUser.username">
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="text" class="form-control" name="password" id="password" [(ngModel)] = "selectedUser.password">
+        </div>
+        <div class="form-group">
+          <label for="firstName">First Name:</label>
+          <input type="text" class="form-control" name="firstName" id="firstName" [(ngModel)] = "selectedUser.firstName">
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last Name:</label>
+          <input type="text" class="form-control" name="lastName" id="lastName" [(ngModel)] = "selectedUser.lastName">
+        </div>
+        <div class="form-group">
+          <label for="email">Email address:</label>
+          <input type="email" class="form-control" name="email" id="email" [(ngModel)] = "selectedUser.email">
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone number:</label>
+          <input type="number" class="form-control" name="phone" id="phone" [(ngModel)] = "selectedUser.phone">
+        </div>
+        <div class="form-group">
+          <label for="likedBooks">Liked books:</label>
+          <input type="text" class="form-control" name="likedBooks" id="likedBooks" [(ngModel)] = "selectedUser.bookshelf">
+        </div>
+        <div class="form-group">
+          <label for="createdBooks">Created books:</label>
+          <input type="text" class="form-control" name="createdBooks" id="createdBooks" [(ngModel)] = "selectedUser.publishedBooks">
+        </div>
+        <button (click)="updateUser()" class="btn btn-primary btn-block">Update User</button>
+        <button (click)="deleteUser()" class="btn btn-danger btn-block">Delete User</button>
+      </form>
+      <form class="jy-form">
+        <h3>Create new user</h3>
+        <div class="form-group">
+          <label for="nUsername">Username:</label>
+          <input name="nUsername" id="nUsername" placeholder="username" type="text" class="form-control" [(ngModel)] = "nUsername"/>
+        </div>
+        <div class="form-group">
+          <label for="nPassword">Password:</label>
+          <input name="nPassword" id="nPassword" placeholder="password" type="password" class="form-control" [(ngModel)] = "nPassword"/>
+        </div>
+        <button type="button" class="btn btn-primary btn-block" (click)="createUser()">Create user</button>
+      </form>
+
+    </div>
+
+    <div class="tab-pane fade" id="bookTab">
+      <ul class="list-inline">
+        <li *ngFor="let book of books" class="list-inline-item mr-2">
+          <a class="text-primary h5" (click)="selectBook(book)">{{book.title}} |</a>
+        </li>
+      </ul>
+
+      <form class="jy-form" *ngIf="selectedBook">
+        <div class="form-group">
+          <label for="ebTitle">Title:</label>
+          <input type="text" class="form-control" name="ebTitle" id="ebTitle" [(ngModel)] = "selectedBook.title">
+        </div>
+        <div class="form-group">
+          <label for="ebDescription">Description:</label>
+          <textarea rows="3" class="form-control" name="ebDescription" id="ebDescription" [(ngModel)] = "selectedBook.description"> </textarea>
+        </div>
+        <div class="form-group">
+          <label for="ebArticles">Articles:</label>
+          <input type="text" class="form-control" name="ebArticles" id="ebArticles" [(ngModel)] = "selectedBook.articles">
+        </div>
+        <div class="form-group">
+          <label for="ebAuthor">Author:</label>
+          <input type="text" class="form-control" name="ebAuthor" id="ebAuthor" [(ngModel)] = "selectedBook._author">
+        </div>
+        <button (click)="updateBook()" class="btn btn-primary btn-block">Update Book</button>
+        <button (click)="deleteBook()" class="btn btn-danger btn-block">Delete Book</button>
+      </form>
+
+      <form class="jy-form">
+        <h3>Create new book</h3>
+        <div class="form-group">
+          <label for="nbTitle">Book Name:</label>
+          <input type="text" class="form-control" name="nbTitle" id="nbTitle" [(ngModel)] = "nbTitle" required>
+        </div>
+        <button type="button" class="btn btn-primary btn-block" (click)="createBook()">Create book</button>
+      </form>
+    </div>
+
+    <div class="tab-pane fade" id="articleTab">
+        <li *ngFor="let article of articles" class="list-inline-item mr-2">
+          <a class="text-primary h5" (click)="selectArticle(article)">{{article.chapterName}} |</a>
+        </li>
+
+      <form  *ngIf="selectedArticle" class="jy-form">
+        <div class="form-group">
+          <label for="aCNumber">Chapter Number: </label>
+          <input type="number" class="form-control" name="aCNumber" id="aCNumber" [(ngModel)] = "selectedArticle.chapterNumber">
+        </div>
+
+        <div class="form-group">
+          <label for="aCName">Chapter Name: </label>
+          <input type="text" class="form-control" name="aCName" id="aCName" [(ngModel)] = "selectedArticle.chapterName">
+        </div>
+
+        <div class="form-group">
+          <label for="aContent">Content:</label>
+          <textarea rows="5" class="form-control" name="aContent" id="aContent" [(ngModel)] = "selectedArticle.content"> </textarea>
+        </div>
+        <div class="form-group">
+          <label for="aBook">Book:</label>
+          <input type="text" class="form-control" name="aBook" id="aBook" [(ngModel)] = "selectedArticle._book">
+        </div>
+        <button (click)="updateArticle()" class="btn btn-primary btn-block">Update Article</button>
+        <button (click)="deleteArticle()" class="btn btn-danger btn-block">Delete Article</button>
+      </form>
+
+      <form class="jy-form">
+        <h3>Create new article</h3>
+        <div class="form-group">
+          <label for="naChapterName">Chapter Name:</label>
+          <input type="text" class="form-control" name="naChapterName" id="naChapterName" [(ngModel)] = "naChapterName">
+        </div>
+        <button type="button" class="btn btn-primary btn-block" (click)="createArticle()">Create article</button>
+      </form>
+
+    </div>
+
+    <div class="tab-pane fade" id="commentTab">
+      <ul class="list-group">
+        <li (click)="selectComment(comment)" class="list-group-item" *ngFor="let comment of comments">{{comment.text}}</li>
+      </ul>
+
+      <form  *ngIf="selectedComment" class="jy-form">
+        <div class="form-group">
+          <label for="cUser">User: </label>
+          <input type="text" class="form-control" name="cUser" id="cUser" [(ngModel)] = "selectedComment._user">
+        </div>
+        <div class="form-group">
+          <label for="cContent">Content: </label>
+          <input type="text" class="form-control" name="cContent" id="cContent" [(ngModel)] = "selectedComment.text">
+        </div>
+        <div class="form-group">
+          <label for="cBook">Book: </label>
+          <input type="text" class="form-control" name="cBook" id="cBook" [(ngModel)] = "selectedComment._book">
+        </div>
+        <button (click)="updateComment()" class="btn btn-primary btn-block">Update Comment</button>
+        <button (click)="deleteComment()" class="btn btn-danger btn-block">Delete Comment</button>
+      </form>
+      <form class="jy-form">
+        <h3>Create new comment</h3>
+        <div class="form-group">
+          <label for="cText">Content</label>
+          <input type="text" class="form-control" name="cText" id="cText" [(ngModel)] = "cText">
+        </div>
+        <button type="button" class="btn btn-primary btn-block" (click)="createComment()">Create comment</button>
+      </form>
+    </div>
+
+  </div>
+
+</div>
+
+<ng-template #elseBlock>
+  <h2>Unauthorized</h2>
+</ng-template>

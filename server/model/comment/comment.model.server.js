@@ -2,6 +2,7 @@ let mongoose = require('mongoose');
 let commentSchema = require('./comment.schema.server');
 let CommentModel = mongoose.model('CommentModel', commentSchema);
 CommentModel.createComment = createComment;
+CommentModel.findAllComments = findAllComments;
 CommentModel.findAllCommentsForBook = findAllCommentsForBook;
 CommentModel.findAllCommentsForUser = findAllCommentsForUser;
 CommentModel.findCommentById = findCommentById;
@@ -13,6 +14,10 @@ module.exports = CommentModel;
 
 function createComment(comment) {
   return CommentModel.create(comment);
+}
+
+function findAllComments() {
+  return CommentModel.find();
 }
 
 function findAllCommentsForBook(bookId) {

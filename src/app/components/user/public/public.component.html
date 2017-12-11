@@ -4,8 +4,14 @@
       <h3>{{user.firstName + ' ' + user.lastName}}</h3>
       <h5>{{'Role: ' + user.role}}</h5>
 
-      <div>
-
+      <div *ngIf="currentUser && (user.role === 'writer' || user.role === 'editor') && user._id !== currentUser._id">
+        <div *ngIf="user.followedBy.indexOf(currentUser._id) === -1; then thenBlock else elseBlock"></div>
+        <ng-template #thenBlock>
+          <button (click)="toggleFollow(user)" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>  Follow</button>
+        </ng-template>
+        <ng-template #elseBlock>
+          <button (click)="toggleFollow(user)" class="btn btn-danger btn-sm"><i class="fa fa-minus"></i>  Unfollow</button>
+        </ng-template>
       </div>
 
       <div *ngIf="user.role === 'writer'">

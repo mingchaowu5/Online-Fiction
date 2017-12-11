@@ -20,7 +20,7 @@ const APP_ROUTES: Routes = [
   { path : 'people' , component: PeopleComponent},
   { path : 'login' , component: LoginComponent},
   { path : 'register' , component: RegisterComponent },
-  { path : 'admin' , component: AdminComponent },
+  { path : 'admin' , component: AdminComponent, canActivate: [AuthenticationService] },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthenticationService] },
   { path : 'book/:bid' , component: BookComponent },
   { path : 'article/:aid' , component: ArticleComponent },

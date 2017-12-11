@@ -37,4 +37,18 @@ export class PublicComponent implements OnInit {
     });
   }
 
+  toggleFollow(user) {
+    this.userService.toggleFollow(this.currentUser._id, user._id).subscribe(r => {
+      console.log('toggle follow from server', r);
+      this.userService.findUserById(this.user._id).subscribe(result => {
+        this.user = result;
+        this.userService.findUserById(this.currentUser._id).subscribe(cUser => {
+          this.currentUser = cUser;
+          this.sharedService.user = cUser;
+          console.log('current user', cUser);
+        });
+      });
+    });
+  }
+
 }

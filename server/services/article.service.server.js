@@ -13,9 +13,13 @@ module.exports = function (app) {
     let article = req.body;
     let bookId = req.params['bookId'];
     articleModel.createArticle(article).then(function (result) {
-      bookModel.addArticle(bookId, result._id).then(function (r) {
+      if (bookId != 0) {
+        bookModel.addArticle(bookId, result._id).then(function (r) {
+          res.json(result);
+        })
+      } else {
         res.json(result);
-      })
+      }
     })
   }
 
@@ -50,11 +54,17 @@ module.exports = function (app) {
   function deleteArticle(req, res) {
     let pid = req.params['articleId'];
     articleModel.findArticleById(pid).then(function (article) {
-      bookModel.removeArticle(article._book, article._id).then(function (book) {
+      if (article._book) {
+        bookModel.removeArticle(article._book, article._id).then(function (book) {
+          articleModel.deleteArticle(pid).then(function (result) {
+            res.json({});
+          });
+        });
+      } else {
         articleModel.deleteArticle(pid).then(function (result) {
           res.json({});
         });
-      });
+      }
     });
   }
 

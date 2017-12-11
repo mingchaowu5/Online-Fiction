@@ -4,15 +4,16 @@
     <div class="col">
       <h3>{{user.firstName + ' ' + user.lastName}}</h3>
       <h5>{{'Role: ' + user.role}}</h5>
+      <a *ngIf="user.role === 'admin'" class="btn btn-primary" routerLink="/admin">Admin page</a>
 
       <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
           <a class="nav-link active" id="about-tab" data-toggle="tab" href="#about">About</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="user.role === 'writer'">
           <a class="nav-link" id="book-tab" data-toggle="tab" href="#myBook">My books</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="user.role === 'editor'">
           <a  class="nav-link" id="comment-tab" data-toggle="tab" href="#myComment">My comments</a>
         </li>
         <li class="nav-item">
@@ -22,7 +23,7 @@
         <li class="nav-item">
           <a class="nav-link" id="following-tab" data-toggle="tab" href="#following">Following</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="user.role === 'editor' || user.role === 'writer'">
           <a class="nav-link" id="follower-tab" data-toggle="tab" href="#follower">Followers</a>
         </li>
       </ul>
@@ -110,11 +111,29 @@
         </div>
 
         <div class="tab-pane fade" id="following">
-          <p>Following</p>
+          <div class="row">
+            <div class="col-12 col-sm-6 col-lg-4 mb-4 jy-book" *ngFor="let user of followings">
+              <div class="card">
+                <div class="card-body">
+                  <a routerLink="/user/{{user._id}}"><h4 class="card-title">{{user.firstName}}</h4></a>
+                  <p class="card-text">{{'Role: ' + user.role}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="tab-pane fade" id="follower">
-          <p>Followers</p>
+          <div class="row">
+            <div class="col-12 col-sm-6 col-lg-4 mb-4 jy-book" *ngFor="let user of followers">
+              <div class="card">
+                <div class="card-body">
+                  <a routerLink="/user/{{user._id}}"><h4 class="card-title">{{user.firstName}}</h4></a>
+                  <p class="card-text">{{'Role: ' + user.role}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -199,7 +218,7 @@
       <div class="modal-body" >
         <form #eaF="ngForm">
           <div class="form-group">
-            <label for="ecText">Title:</label>
+            <label for="ecText">Content:</label>
             <input type="text" class="form-control" name="ecText" id="ecText" [(ngModel)] = "currentEditComment.text" required>
           </div>
           <div *ngIf="!currentEditComment.text" class="alert alert-danger">
