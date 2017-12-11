@@ -1,0 +1,235 @@
+<div class="container-fluid">
+
+  <div class="row">
+    <div class="col">
+      <h3>{{user.firstName + ' ' + user.lastName}}</h3>
+      <h5>{{'Role: ' + user.role}}</h5>
+      <a *ngIf="user.role === 'admin'" class="btn btn-primary" routerLink="/admin">Admin page</a>
+
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="about-tab" data-toggle="tab" href="#about">About</a>
+        </li>
+        <li class="nav-item" *ngIf="user.role === 'writer'">
+          <a class="nav-link" id="book-tab" data-toggle="tab" href="#myBook">My books</a>
+        </li>
+        <li class="nav-item" *ngIf="user.role === 'editor'">
+          <a  class="nav-link" id="comment-tab" data-toggle="tab" href="#myComment">My comments</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="book-like-tab" data-toggle="tab" href="#likedBook">Liked books</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" id="following-tab" data-toggle="tab" href="#following">Following</a>
+        </li>
+        <li class="nav-item" *ngIf="user.role === 'editor' || user.role === 'writer'">
+          <a class="nav-link" id="follower-tab" data-toggle="tab" href="#follower">Followers</a>
+        </li>
+      </ul>
+
+      <div class="tab-content" id="myTabContent">
+
+        <div class="tab-pane fade show active" id="about">
+          <form class="jy-max-width-700 mx-auto" *ngIf="user">
+            <div class="form-group">
+              <label for="firstName">First Name:</label>
+              <input type="text" class="form-control" name="firstName" id="firstName" [(ngModel)] = "user.firstName">
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name:</label>
+              <input type="text" class="form-control" name="lastName" id="lastName" [(ngModel)] = "user.lastName">
+            </div>
+            <div class="form-group">
+              <label for="email">Email address:</label>
+              <input type="email" class="form-control" name="email" id="email" [(ngModel)] = "user.email">
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone number:</label>
+              <input type="number" class="form-control" name="phone" id="phone" [(ngModel)] = "user.phone">
+            </div>
+            <div class="form-group">
+              <label for="role">Role</label>
+              <select class="form-control" id="role" name="role" [(ngModel)] = "user.role">
+                <option *ngFor="let r of role" [value]="r">{{r}}</option>
+              </select>
+            </div>
+            <div *ngIf="updateMessageFlag" class="alert alert-success" role="alert">
+              {{updateMessage}}
+            </div>
+            <button (click)="updateUser()" class="btn btn-primary btn-block">Save</button>
+            <button (click)="logOut()" class="btn btn-danger btn-block">Log out</button>
+          </form>
+        </div>
+
+        <div class="tab-pane fade" id="myBook">
+          <button class="btn btn-primary btn-block my-2 mx-auto jy-max-width-700" data-toggle="modal" data-target="#newBookModel">Create book</button>
+          <div class="row">
+            <div class="col-12 col-sm-6 col-lg-4 mb-4 jy-book" *ngFor="let book of books; index as i">
+              <div class="card">
+                <div class="card-body">
+                  <a routerLink="/book/{{book._id}}"><h4 class="card-title">{{book.title}}</h4></a>
+                  <h6 class="card-subtitle mb-2 text-muted">{{book.articles.length + ' Chapters'}}</h6>
+                  <p class="card-text">{{book.description}}</p>
+                </div>
+              </div>
+              <div class="book-edit">
+                <a (click)="editBook(book)"><i class="fa fa-cog"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="myComment">
+          <div class="row my-2" >
+            <div class="col-12 col-sm-6 col-lg-4 mb-4 jy-book" *ngFor="let cmt of comments; index as i">
+              <div class="card">
+                <div class="card-body">
+                  <a routerLink="/book/{{cmt._book._id}}"><h4 class="card-title">{{cmt._book.title}}</h4></a>
+                  <p class="card-text">{{cmt.text}}</p>
+                </div>
+              </div>
+              <div class="book-edit">
+                <a (click)="editComment(cmt)"><i class="fa fa-cog"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="likedBook">
+          <div class="row my-2">
+            <div class="col-12 col-sm-6 col-lg-4 mb-4 jy-book" *ngFor="let book of likedBooks">
+              <div class="card">
+                <div class="card-body">
+                  <a routerLink="/book/{{book._id}}"><h4 class="card-title">{{book.title}}</h4></a>
+                  <h6 class="card-subtitle mb-2 text-muted">{{book.articles.length + ' Chapters'}}</h6>
+                  <p class="card-text">{{book.description}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="following">
+          <div class="row">
+            <div class="col-12 col-sm-6 col-lg-4 mb-4 jy-book" *ngFor="let user of followings">
+              <div class="card">
+                <div class="card-body">
+                  <a routerLink="/user/{{user._id}}"><h4 class="card-title">{{user.firstName}}</h4></a>
+                  <p class="card-text">{{'Role: ' + user.role}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="follower">
+          <div class="row">
+            <div class="col-12 col-sm-6 col-lg-4 mb-4 jy-book" *ngFor="let user of followers">
+              <div class="card">
+                <div class="card-body">
+                  <a routerLink="/user/{{user._id}}"><h4 class="card-title">{{user.firstName}}</h4></a>
+                  <p class="card-text">{{'Role: ' + user.role}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="newBookModel" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create new book</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #f="ngForm">
+          <div class="form-group">
+            <label for="nbTitle">Title:</label>
+            <input type="text" class="form-control" name="nbTitle" id="nbTitle" [(ngModel)] = "nbTitle" required>
+          </div>
+          <div class="form-group">
+            <label for="nbDescription">Description:</label>
+            <textarea rows="3" class="form-control" name="nbDescription" id="nbDescription" [(ngModel)] = "nbDescription"> </textarea>
+          </div>
+          <div *ngIf="!nbTitle" class="alert alert-danger">
+            Book title is required
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button"  class="btn btn-danger" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary btn-block" (click)="createBook()" [disabled]="!nbTitle">Create</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editBookModel" tabindex="-1" *ngIf="currentEditBook">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit book</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" >
+        <form #eaF="ngForm">
+          <div class="form-group">
+            <label for="ebTitle">Title:</label>
+            <input type="text" class="form-control" name="ebTitle" id="ebTitle" [(ngModel)] = "currentEditBook.title" required>
+          </div>
+          <div class="form-group">
+            <label for="ebDescription">Description:</label>
+            <textarea rows="3" class="form-control" name="ebDescription" id="ebDescription" [(ngModel)] = "currentEditBook.description"> </textarea>
+          </div>
+          <div *ngIf="!currentEditBook.title" class="alert alert-danger">
+            Book title is required
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button"  class="btn btn-danger" data-dismiss="modal" (click)="deleteBook()">Delete</button>
+        <button type="button" class="btn btn-success btn-block" (click)="updateBook()" [disabled]="!currentEditBook.title">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editCommentModel" tabindex="-1" *ngIf="currentEditComment">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit comment</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" >
+        <form #eaF="ngForm">
+          <div class="form-group">
+            <label for="ecText">Content:</label>
+            <input type="text" class="form-control" name="ecText" id="ecText" [(ngModel)] = "currentEditComment.text" required>
+          </div>
+          <div *ngIf="!currentEditComment.text" class="alert alert-danger">
+            Comment cannot be empty
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button"  class="btn btn-danger" data-dismiss="modal" (click)="deleteComment()">Delete</button>
+        <button type="button" class="btn btn-success btn-block" (click)="updateComment()" [disabled]="!currentEditComment.text">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

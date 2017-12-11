@@ -35,7 +35,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "/* You can add global styles to this file, and also import other style files */\n", ""]);
+exports.push([module.i, "/* You can add global styles to this file, and also import other style files */\n.jy-max-width-700 {\n  max-width: 700px;\n}\n\ninput {\n  margin-bottom: 5px;\n}\n\na:not([href]) {\n  cursor: pointer;\n}\n", ""]);
 
 // exports
 

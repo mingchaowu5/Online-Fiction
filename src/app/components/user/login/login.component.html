@@ -1,0 +1,18 @@
+<div class="container-fluid jy-max-width-700">
+
+  <div *ngIf="errorFlag" class="alert alert-danger">
+    {{errorMsg}}
+  </div>
+
+  <h1>Login</h1>
+
+  <form (ngSubmit) = "login()" #f="ngForm">
+
+    <input placeholder="username" name="username" type="text" class="form-control" [(ngModel)]="username" required/>
+    <input placeholder="password" name="password" type="password" class="form-control" [(ngModel)]="password" required/>
+
+    <button class="btn btn-primary btn-block" type="submit" [disabled]="!f.valid">Login</button>
+    <a class="btn btn-success btn-block" [routerLink]="['/register']">Register</a>
+  </form>
+
+</div>

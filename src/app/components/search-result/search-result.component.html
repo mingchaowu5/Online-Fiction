@@ -1,0 +1,15 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <h4>Books from <a href="https://google.com/">GoogleBook</a></h4>
+    </div>
+  </div>
+  <div class="row">
+    <div *ngFor = "let book of books" class="col-12 col-sm-6 col-md-4">
+      <a routerLink="/search-result/detail/{{book.id}}">
+        <!--<img class="img-fluid" [src] = "pic.urls.small"/>-->
+        <p>{{book.volumeInfo.title}}</p>
+      </a>
+    </div>
+  </div>
+</div>
