@@ -43,6 +43,15 @@ export class BookService {
       );
   }
 
+  findLikedBooksForUser(userId) {
+    return this.http.get(this.baseUrl + '/api/user/' + userId + '/like/book')
+      .map(
+        (res: Response) => {
+          return res.json();
+        }
+      );
+  }
+
   findBookById(bookId) {
     return this.http.get(this.baseUrl + '/api/book/' + bookId)
       .map(

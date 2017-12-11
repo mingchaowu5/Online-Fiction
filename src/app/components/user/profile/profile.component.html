@@ -78,18 +78,45 @@
             </div>
           </div>
         </div>
+
         <div class="tab-pane fade" id="myComment">
-          <p>My comment</p>
+          <div class="row my-2" >
+            <div class="col-12 col-sm-6 col-lg-4 mb-4 jy-book" *ngFor="let cmt of comments; index as i">
+              <div class="card">
+                <div class="card-body">
+                  <a routerLink="/book/{{cmt._book._id}}"><h4 class="card-title">{{cmt._book.title}}</h4></a>
+                  <p class="card-text">{{cmt.text}}</p>
+                </div>
+              </div>
+              <div class="book-edit">
+                <a (click)="editComment(cmt)"><i class="fa fa-cog"></i></a>
+              </div>
+            </div>
+          </div>
         </div>
+
         <div class="tab-pane fade" id="likedBook">
-          <p>Liked book</p>
+          <div class="row my-2">
+            <div class="col-12 col-sm-6 col-lg-4 mb-4 jy-book" *ngFor="let book of likedBooks">
+              <div class="card">
+                <div class="card-body">
+                  <a routerLink="/book/{{book._id}}"><h4 class="card-title">{{book.title}}</h4></a>
+                  <h6 class="card-subtitle mb-2 text-muted">{{book.articles.length + ' Chapters'}}</h6>
+                  <p class="card-text">{{book.description}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+
         <div class="tab-pane fade" id="following">
           <p>Following</p>
         </div>
+
         <div class="tab-pane fade" id="follower">
           <p>Followers</p>
         </div>
+
       </div>
 
     </div>
@@ -155,6 +182,34 @@
       <div class="modal-footer">
         <button type="button"  class="btn btn-danger" data-dismiss="modal" (click)="deleteBook()">Delete</button>
         <button type="button" class="btn btn-success btn-block" (click)="updateBook()" [disabled]="!currentEditBook.title">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editCommentModel" tabindex="-1" *ngIf="currentEditComment">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit comment</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" >
+        <form #eaF="ngForm">
+          <div class="form-group">
+            <label for="ecText">Title:</label>
+            <input type="text" class="form-control" name="ecText" id="ecText" [(ngModel)] = "currentEditComment.text" required>
+          </div>
+          <div *ngIf="!currentEditComment.text" class="alert alert-danger">
+            Comment cannot be empty
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button"  class="btn btn-danger" data-dismiss="modal" (click)="deleteComment()">Delete</button>
+        <button type="button" class="btn btn-success btn-block" (click)="updateComment()" [disabled]="!currentEditComment.text">Save</button>
       </div>
     </div>
   </div>

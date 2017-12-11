@@ -43,6 +43,15 @@ export class CommentService {
       );
   }
 
+  findCommentsForUser(userId) {
+    return this.http.get(this.baseUrl + '/api/user/' + userId + '/comment')
+      .map(
+        (res: Response) => {
+          return res.json();
+        }
+      );
+  }
+
   findCommentById(commentId) {
     return this.http.get(this.baseUrl + '/api/comment/' + commentId)
       .map(

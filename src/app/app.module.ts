@@ -22,6 +22,7 @@ import { BookComponent } from './components/book/book.component';
 import { ArticleComponent } from './components/article/article.component';
 import { SearchResultComponent } from './components/search-result/search-result.component';
 import { SearchResultDetailComponent } from './components/search-result/search-result-detail/search-result-detail.component';
+import { PublicComponent } from './components/user/public/public.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { SearchResultDetailComponent } from './components/search-result/search-r
     BookComponent,
     ArticleComponent,
     SearchResultComponent,
-    SearchResultDetailComponent
+    SearchResultDetailComponent,
+    PublicComponent
   ],
   imports: [
     BrowserModule,

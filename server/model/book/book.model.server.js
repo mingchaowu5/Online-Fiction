@@ -6,6 +6,7 @@ let userModel = require('../user/user.model.server');
 BookModel.createBook = createBook;
 BookModel.findAllBooks = findAllBooks;
 BookModel.findAllBooksForUser = findAllBooksForUser;
+BookModel.findUserLikedBooks = findUserLikedBooks;
 BookModel.findBookById = findBookById;
 BookModel.updateBook = updateBook;
 BookModel.deleteBook = deleteBook;
@@ -42,6 +43,10 @@ function findAllBooks() {
 
 function findAllBooksForUser(userId) {
   return BookModel.find({_author: userId});
+}
+
+function findUserLikedBooks(userId) {
+  return userModel.findById(userId).populate('bookshelf').exec();
 }
 
 function findBookById(bookId) {

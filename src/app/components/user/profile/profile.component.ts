@@ -3,6 +3,7 @@ import {UserService} from '../../../services/user.service.client';
 import {Router} from '@angular/router';
 import {SharedService} from '../../../services/shared.service.client';
 import {BookService} from "../../../services/book.service.client";
+import {CommentService} from "../../../services/comment.service.client";
 declare let $: any;
 
 @Component({
@@ -20,15 +21,29 @@ export class ProfileComponent implements OnInit {
   nbDescription;
   currentEditBook;
 
+  likedBooks;
+
+  comments;
+  currentEditComment;
+
   updateMessageFlag = false;
   updateMessage = 'Successfully updated';
   constructor(private userService: UserService, private router: Router, private sharedService: SharedService,
-               private bookService: BookService, private changeDetectorRef: ChangeDetectorRef) { }
+               private bookService: BookService, private changeDetectorRef: ChangeDetectorRef,
+               private commentService: CommentService) { }
 
   ngOnInit() {
     this.user = this.sharedService.user;
     this.bookService.findBooksForUser(this.user._id).subscribe(result => {
       this.books = result;
+    });
+    this.bookService.findLikedBooksForUser(this.user._id).subscribe(result => {
+      this.likedBooks = result;
+      console.log('liked book', result);
+    });
+    this.commentService.findCommentsForUser(this.user._id).subscribe(result => {
+      this.comments = result;
+      console.log('comment of user', result);
     });
   }
 
@@ -83,6 +98,30 @@ export class ProfileComponent implements OnInit {
       this.bookService.findBooksForUser(this.user._id).subscribe(result => {
         $('#editBookModel').modal('hide');
         this.books = result;
+      });
+    });
+  }
+
+  editComment(cmt) {
+    this.currentEditComment = cmt;
+    this.changeDetectorRef.detectChanges();
+    $('#editCommentModel').modal('show');
+  }
+
+  deleteComment() {
+    this.commentService.deleteComment(this.currentEditComment._id).subscribe(r => {
+      this.commentService.findCommentsForUser(this.user._id).subscribe(result => {
+        this.comments = result;
+        $('#editCommentModel').modal('hide');
+      });
+    });
+  }
+
+  updateComment() {
+    this.commentService.updateComment(this.currentEditComment._id, this.currentEditComment).subscribe(r => {
+      this.commentService.findCommentsForUser(this.user._id).subscribe(result => {
+        this.comments = result;
+        $('#editCommentModel').modal('hide');
       });
     });
   }

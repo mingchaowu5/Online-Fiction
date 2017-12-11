@@ -11,6 +11,7 @@ import {BookComponent} from "./components/book/book.component";
 import {ArticleComponent} from "./components/article/article.component";
 import {SearchResultComponent} from "./components/search-result/search-result.component";
 import {SearchResultDetailComponent} from "./components/search-result/search-result-detail/search-result-detail.component";
+import {PublicComponent} from "./components/user/public/public.component";
 
 const APP_ROUTES: Routes = [
   // { path : '', component : HomeComponent},
@@ -21,6 +22,7 @@ const APP_ROUTES: Routes = [
   { path: 'profile', component: ProfileComponent, canActivate: [AuthenticationService] },
   { path : 'book/:bid' , component: BookComponent },
   { path : 'article/:aid' , component: ArticleComponent },
+  { path : 'user/:uid' , component: PublicComponent },
   { path: 'search-result/:term', component: SearchResultComponent},
   { path: 'search-result/detail/:bid', component: SearchResultDetailComponent},
   // { path : 'user/:uid' , component: ProfileComponent},

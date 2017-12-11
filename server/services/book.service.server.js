@@ -4,6 +4,7 @@ module.exports = function (app) {
 
   app.post('/api/user/:userId/book', createBook);
   app.get('/api/user/:userId/book', findAllBooksForUser);
+  app.get('/api/user/:userId/like/book', findLikedBooksForUser);
   app.get('/api/book/:bookId', findBookById);
   app.get('/api/book', findAllBooks);
   app.put('/api/book/:bookId', updateBook);
@@ -29,6 +30,13 @@ module.exports = function (app) {
     let userId = req.params['userId'];
     bookModel.findAllBooksForUser(userId).then(function (result) {
       res.json(result);
+    })
+  }
+
+  function findLikedBooksForUser(req, res) {
+    let userId = req.params['userId'];
+    bookModel.findUserLikedBooks(userId).then(function (result) {
+      res.json(result.bookshelf);
     })
   }
 

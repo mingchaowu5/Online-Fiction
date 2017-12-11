@@ -1,11 +1,20 @@
 <div class="container-fluid jy-max-width-700">
-  <div class="row">
+  <div class="row" *ngIf="book">
     <div class="col text-center">
       <h2>{{book.title}}</h2>
       <h6 class="text-muted">{{book._author.firstName}}</h6>
       <p>{{book.description}}</p>
     </div>
   </div>
+  <div *ngIf="user && book" class="my-2 text-center">
+    <div *ngIf="user.bookshelf.indexOf(book._id) === -1; else elseBlock">
+      <button class="btn btn-primary mr-2" (click)="toggleLikeBook(book)">Like</button>
+    </div>
+    <ng-template #elseBlock>
+      <button class="btn btn-danger mr-2" (click)="toggleLikeBook(book)" >Unlike</button>
+    </ng-template>
+  </div>
+
   <button class="btn btn-primary btn-block my-2 mx-auto"
           data-toggle="modal" data-target="#newArticleModel">Create new chapter</button>
   <li *ngFor="let article of articles" class="list-group-item">
@@ -22,6 +31,26 @@
       </div>
     </div>
   </li>
+
+  <div class="row mx-auto">
+    <div class="col">
+      <hr>
+      <h3>Comments</h3>
+
+      <div class="row" *ngFor="let cmt of comments">
+        <div class="col">
+          <a routerLink="/user/{{cmt._user._id}}"><strong>{{cmt._user.firstName}}</strong></a>
+          <p>{{cmt.text}}</p>
+        </div>
+      </div>
+
+      <form *ngIf="user" class="mb-4">
+        <input class="form-control" type="text" placeholder="Comment" [(ngModel)]="bookComment" name="comment">
+        <button (click)="createComment()" type="button" class="btn btn-primary btn-block">Leave a comment</button>
+      </form>
+    </div>
+  </div>
+
 </div>
 
 <div class="modal fade" id="newArticleModel" tabindex="-1">

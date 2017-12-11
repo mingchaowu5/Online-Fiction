@@ -3,6 +3,7 @@ module.exports = function (app) {
 
   app.post('/api/create/comment', createComment);
   app.get('/api/book/:bookId/comment', findAllCommentsForBook);
+  app.get('/api/user/:userId/comment', findAllCommentsForUser);
   app.get('/api/comment', findAllComments);
   app.get('/api/comment/:commentId', findCommentById);
   app.put('/api/comment/:commentId', updateComment);
@@ -24,6 +25,13 @@ module.exports = function (app) {
   function findAllCommentsForBook(req, res) {
     let bid = req.params['bookId'];
     commentModel.findAllCommentsForBook(bid).then(function (result) {
+      res.json(result);
+    })
+  }
+
+  function findAllCommentsForUser(req, res) {
+    let uid = req.params['userId'];
+    commentModel.findAllCommentsForUser(uid).then(function (result) {
       res.json(result);
     })
   }

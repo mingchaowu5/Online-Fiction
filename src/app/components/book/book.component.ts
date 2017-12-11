@@ -4,6 +4,8 @@ import {ArticleService} from "../../services/article.service.client";
 import {SharedService} from "../../services/shared.service.client";
 import {BookService} from "../../services/book.service.client";
 import {ActivatedRoute} from "@angular/router";
+import {UserService} from "../../services/user.service.client";
+import {CommentService} from "../../services/comment.service.client";
 declare let $: any;
 
 @Component({
@@ -21,8 +23,13 @@ export class BookComponent implements OnInit {
   naContent;
 
   currentEditArticle;
-  constructor(private sharedService: SharedService, private articleService: ArticleService,
-               private bookService: BookService, private acRoute: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef) { }
+
+  comments;
+  bookComment;
+
+  constructor(private sharedService: SharedService, private articleService: ArticleService, private userService: UserService,
+               private bookService: BookService, private acRoute: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef,
+               private commentService: CommentService) { }
 
   ngOnInit() {
     this.user = this.sharedService.user;
@@ -35,6 +42,16 @@ export class BookComponent implements OnInit {
       this.articleService.findArticlesForBook(bookId).subscribe(result => {
         this.articles = result;
       });
+      this.commentService.findCommentsForBook(bookId).subscribe(result => {
+        this.comments = result;
+      });
+    });
+  }
+
+  toggleLikeBook(book) {
+    this.userService.toggleLikeBook(this.user._id, this.book._id).subscribe(result => {
+      this.user = result;
+      console.log(this.user);
     });
   }
 
@@ -75,6 +92,21 @@ export class BookComponent implements OnInit {
         this.articles = result;
       });
     });
+  }
+
+  createComment() {
+    if (this.bookComment) {
+      const newComment = {
+        text: this.bookComment,
+        _user: this.user._id,
+        _book: this.book._id,
+      };
+      this.commentService.createComment(newComment).subscribe(r => {
+        this.commentService.findCommentsForBook(this.book._id).subscribe(result => {
+          this.comments = result;
+        });
+      });
+    }
   }
 
 }
