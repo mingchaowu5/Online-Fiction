@@ -13,6 +13,7 @@ import {BookService} from './services/book.service.client';
 import {ArticleService} from './services/article.service.client';
 import {CommentService} from './services/comment.service.client';
 import {SharedService} from './services/shared.service.client';
+import {GoogleBookService} from './services/googlebook.service.client';
 import {HttpModule} from '@angular/http';
 import {FormsModule} from '@angular/forms';
 import {Routing} from './app.routing';
@@ -44,7 +45,7 @@ import { SearchResultDetailComponent } from './components/search-result/search-r
     FormsModule,
     Routing,
   ],
-  providers: [AuthenticationService, UserService, BookService, ArticleService, CommentService, SharedService],
+  providers: [AuthenticationService, UserService, BookService, ArticleService, CommentService, SharedService,GoogleBookService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
