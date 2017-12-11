@@ -12,6 +12,7 @@ import {ArticleComponent} from "./components/article/article.component";
 import {SearchResultComponent} from "./components/search-result/search-result.component";
 import {SearchResultDetailComponent} from "./components/search-result/search-result-detail/search-result-detail.component";
 import {PublicComponent} from "./components/user/public/public.component";
+import {AdminComponent} from "./components/admin/admin.component";
 
 const APP_ROUTES: Routes = [
   // { path : '', component : HomeComponent},
@@ -19,6 +20,7 @@ const APP_ROUTES: Routes = [
   { path : 'people' , component: PeopleComponent},
   { path : 'login' , component: LoginComponent},
   { path : 'register' , component: RegisterComponent },
+  { path : 'admin' , component: AdminComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthenticationService] },
   { path : 'book/:bid' , component: BookComponent },
   { path : 'article/:aid' , component: ArticleComponent },
