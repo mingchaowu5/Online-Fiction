@@ -12,4 +12,4 @@ It is a website that allows writers to write and publih books online, readers to
 
 [Wiki](https://github.com/Jason-Jiaxin/cs5200-fall-2017-yang-jiaxin-wu-mingchao/wiki).
 
-[youtubevideo](https://www.youtube.com/watch?v=Tl-UXb_tpLA&feature=youtu.be).
+[Youtube Video](https://www.youtube.com/watch?v=Tl-UXb_tpLA&feature=youtu.be).
